@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React from "react";
+
+import {connect} from 'react-redux';
+import {updateInput} from './redux/action';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  handleChange = (e) => {
+    e.preventDefault();
+    this.props.updateInput(e.target.value);
+  }
+
+  render() {
+      console.log(this.props)
+    return (
+        <div>
+          <input type="text" onChange={this.handleChange} />
+          <p>{this.props.input}</p>
+        </div>
+    )
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    input: state.input
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    updateInput: (input) => dispatch(updateInput(input))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
